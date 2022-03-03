@@ -43,7 +43,7 @@ void HeapTimer::add(int id, int timeout, const TimeoutCallBack& cb) {
         ref_[id] = i;
         heap_.push_back({id, Clock::now() + MS(timeout), cb});
         siftup_(i); // 向上调整，跟父亲比较
-    } 
+    }
     else {
         /* 已有结点：调整堆 */
         i = ref_[id];

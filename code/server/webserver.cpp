@@ -13,7 +13,7 @@ WebServer::WebServer(
     srcDir_ = getcwd(nullptr, 256); // 获取当前的工作路径
     // /home/nowcoder/WebServer-master/resources/
     assert(srcDir_);
-    strncat(srcDir_, "/resources/", 16);
+    strncat(srcDir_, "/../gatepass/", 16);
     
     HttpConn::userCount = 0;
     HttpConn::srcDir = srcDir_;

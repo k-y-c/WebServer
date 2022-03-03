@@ -191,8 +191,8 @@ bool HttpRequest::UserVerify(const string &name, const string &pwd, bool isLogin
     /* 查询用户及密码 */
     snprintf(order, 256, "SELECT username, password FROM user WHERE username='%s' LIMIT 1", name.c_str());
     LOG_DEBUG("%s", order);
-
-    if(mysql_query(sql, order)) { 
+    auto errnum = mysql_query(sql, order);
+    if(errnum) { 
         mysql_free_result(res);
         return false; 
     }
@@ -230,7 +230,11 @@ bool HttpRequest::UserVerify(const string &name, const string &pwd, bool isLogin
         }
         flag = true;
     }
-    SqlConnPool::Instance()->FreeConn(sql);
+    /***************************************************************** 
+    2022.1.29
+    可能会导致重复释放sql，要么加一句sql = nullptr,要么去掉这句话，RAII析构函数直接Free 
+    *****************************************************************/
+    // SqlConnPool::Instance()->FreeConn(sql);
     LOG_DEBUG( "UserVerify success!!");
     return flag;
 }
